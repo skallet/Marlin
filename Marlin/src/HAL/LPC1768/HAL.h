@@ -47,6 +47,9 @@ extern "C" volatile uint32_t _millis;
 #include <pinmapping.h>
 #include <CDCSerial.h>
 
+// i2c uses 8-bit shifted address
+#define I2C_ADDRESS(A) uint8_t((A) << 1)
+
 //
 // Default graphical display delays
 //
@@ -104,16 +107,10 @@ extern "C" volatile uint32_t _millis;
 //
 // Utility functions
 //
-#if GCC_VERSION <= 50000
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wunused-function"
-#endif
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 int freeMemory();
-
-#if GCC_VERSION <= 50000
-  #pragma GCC diagnostic pop
-#endif
+#pragma GCC diagnostic pop
 
 //
 // ADC API
@@ -208,12 +205,4 @@ inline void HAL_reboot() {}  // reboot the board or restart the bootloader
 // Add strcmp_P if missing
 #ifndef strcmp_P
   #define strcmp_P(a, b) strcmp((a), (b))
-#endif
-
-#ifndef strcat_P
-  #define strcat_P(a, b) strcat((a), (b))
-#endif
-
-#ifndef strcpy_P
-  #define strcpy_P(a, b) strcpy((a), (b))
 #endif

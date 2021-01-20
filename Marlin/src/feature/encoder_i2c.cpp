@@ -34,6 +34,7 @@
 
 #include "encoder_i2c.h"
 
+#include "../module/temperature.h"
 #include "../module/stepper.h"
 #include "../gcode/parser.h"
 
@@ -84,7 +85,7 @@ void I2CPositionEncoder::update() {
      * the encoder would be re-enabled.
      */
 
-    #if 0
+    /*
       // If the magnetic strength has been good for a certain time, start trusting the module again
 
       if (millis() - lastErrorTime > I2CPE_TIME_TRUSTED) {
@@ -110,7 +111,7 @@ void I2CPositionEncoder::update() {
           SERIAL_ECHOLNPGM(")");
         #endif
       }
-    #endif
+    */
     return;
   }
 
@@ -331,7 +332,7 @@ bool I2CPositionEncoder::test_axis() {
 
   const float startPosition = soft_endstop.min[encoderAxis] + 10,
               endPosition = soft_endstop.max[encoderAxis] - 10;
-  const feedRate_t fr_mm_s = FLOOR(homing_feedrate(encoderAxis));
+  const feedRate_t fr_mm_s = FLOOR(MMM_TO_MMS((encoderAxis == Z_AXIS) ? HOMING_FEEDRATE_Z : HOMING_FEEDRATE_XY));
 
   ec = false;
 
@@ -381,7 +382,7 @@ void I2CPositionEncoder::calibrate_steps_mm(const uint8_t iter) {
 
   int32_t startCount, stopCount;
 
-  const feedRate_t fr_mm_s = homing_feedrate(encoderAxis);
+  const feedRate_t fr_mm_s = MMM_TO_MMS((encoderAxis == Z_AXIS) ? HOMING_FEEDRATE_Z : HOMING_FEEDRATE_XY);
 
   bool oldec = ec;
   ec = false;

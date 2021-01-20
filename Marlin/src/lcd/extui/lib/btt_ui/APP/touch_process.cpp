@@ -41,8 +41,6 @@ void TS_Get_Coordinates(uint16_t *x, uint16_t *y)
 
   *x = (T_A*tp_x+T_B*tp_y+T_C)/T_K;
   *y = (T_D*tp_x+T_E*tp_y+T_F)/T_K;
-
-  
 }
 
 #define TS_ERR_RANGE 10

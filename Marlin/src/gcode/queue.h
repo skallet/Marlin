@@ -121,7 +121,7 @@ public:
    * Get the next command in the queue, optionally log it to SD, then dispatch it
    */
   static void advance();
-
+  
   /**
    * Add to the circular command queue the next command from:
    *  - The command-injection queue (injected_commands_P)

@@ -1,9 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
- *
- * Based on Sprinter and grbl.
- * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +19,7 @@
 
 #include "../../../inc/MarlinConfig.h"
 
-#if HAS_TFT_XPT2046 || HAS_TOUCH_BUTTONS
+#if HAS_TFT_XPT2046 || HAS_TOUCH_XPT2046
 
 #include "xpt2046.h"
 #include <SPI.h>
@@ -61,10 +58,6 @@ void XPT2046::Init() {
 }
 
 bool XPT2046::isTouched() {
-    //  if(READ(TOUCH_INT_PIN) != HIGH)
-    //  {
-    //   SERIAL_ECHO("OK\r\n");
-    //  }
   return isBusy() ? false : (
     #if PIN_EXISTS(TOUCH_INT)
       READ(TOUCH_INT_PIN) != HIGH
@@ -131,7 +124,7 @@ uint16_t XPT2046::SoftwareIO(uint16_t data) {
 
   // return result;
 
-   uint16_t result = 0;
+    uint16_t result = 0;
 
   for (uint8_t j = 0x80; j > 0; j >>= 1) {
     WRITE(TOUCH_SCK_PIN, LOW);
@@ -148,8 +141,5 @@ uint16_t XPT2046::SoftwareIO(uint16_t data) {
 
   return result;
 }
-
-
-
 
 #endif // HAS_TFT_XPT2046

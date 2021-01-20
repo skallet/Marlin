@@ -4,9 +4,9 @@
 #if ENABLED(BTT_UI_SPI)
 
 #define LCD_BUTTON_INTERVALS      20   //20ms
-#define LCD_EN_A (1<<0)
-#define LCD_EN_B (1<<1)
-#define LCD_EN_C (1<<2)
+#define EN_A (1<<0)
+#define EN_B (1<<1)
+#define EN_C (1<<2)
 
 
 extern  int16_t LCD_encoderPosition;

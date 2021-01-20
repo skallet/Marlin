@@ -345,7 +345,6 @@ KEY_VALUES PrintmenuKeyGetValue(void)
  }
 #endif
 
-
 void loopTempScan(void)
 {
   static int16_t curTempT = 0, curTempB = 0;

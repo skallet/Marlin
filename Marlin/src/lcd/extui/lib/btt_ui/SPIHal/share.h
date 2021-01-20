@@ -14,7 +14,7 @@ uint8_t SPI_ReadWriteByte(uint8_t TxData);
 
 void SPI_SetSpeed(uint8_t SpeedSet);
 
-uint16_t SPI_Write2Byte(uint16_t TxData);
+uint16_t SPI_ReadWrite2Byte(uint16_t TxData);
 void SPIReadBuff(uint8_t* buff,uint32_t len);
 void SPIWriteBuff(uint8_t* buff,uint32_t len);
 void SPIWriteBuff(uint16_t* buff,uint32_t len);

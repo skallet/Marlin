@@ -41,6 +41,7 @@ namespace ExtUI {
     LCD_Setup();
   }
   void onIdle() {
+   //SPI4LINE_LCD_INIT();
    menuUpdate();
 
    #ifdef VIOLENCE_TEST
@@ -94,11 +95,6 @@ namespace ExtUI {
   void onStatusChanged(const char * const msg) {
     statusScreen_setMsg(0, (uint8_t *)msg);
   }
-
-  void onHomingStart() {}
-  void onHomingComplete() {}
-  void onPrintFinished() {}
-
   void onFactoryReset() {}
 
   void onStoreSettings(char *buff) {
@@ -163,9 +159,7 @@ namespace ExtUI {
       // Called for temperature PID tuning result
     }
   #endif
-  
-  void onSteppersDisabled() {}
-  void onSteppersEnabled()  {}
+
 
 }
 

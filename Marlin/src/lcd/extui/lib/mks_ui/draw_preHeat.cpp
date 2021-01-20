@@ -25,6 +25,10 @@
 
 #include "draw_ui.h"
 #include <lv_conf.h>
+//#include "../lvgl/src/lv_objx/lv_imgbtn.h"
+//#include "../lvgl/src/lv_objx/lv_img.h"
+//#include "../lvgl/src/lv_core/lv_disp.h"
+//#include "../lvgl/src/lv_core/lv_refr.h"
 
 #include "../../../../module/temperature.h"
 #include "../../../../inc/MarlinConfig.h"
@@ -153,7 +157,7 @@ static void event_handler(lv_obj_t *obj, lv_event_t event) {
   }
 }
 
-void lv_draw_preHeat() {
+void lv_draw_preHeat(void) {
   scr = lv_screen_create(PRE_HEAT_UI);
 
   // Create image buttons

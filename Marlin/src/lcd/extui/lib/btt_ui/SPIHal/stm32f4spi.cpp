@@ -61,7 +61,7 @@ uint8_t SPI_ReadWriteByte(uint8_t TxData)
 }
 
 
-uint16_t SPI_Write2Byte(uint16_t TxData)
+uint16_t SPI_ReadWrite2Byte(uint16_t TxData)
 {		
 	uint16_t retry=0;				 
 	while((SPI2->SR&1<<1)==0)		

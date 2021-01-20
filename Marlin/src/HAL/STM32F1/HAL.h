@@ -42,7 +42,7 @@
 
 #include "../../inc/MarlinConfigPre.h"
 
-#if HAS_SD_HOST_DRIVE
+#ifdef USE_USB_COMPOSITE
   #include "msc_sd.h"
 #endif
 
@@ -61,7 +61,7 @@
 #endif
 
 #ifdef SERIAL_USB
-  #if !HAS_SD_HOST_DRIVE
+  #ifndef USE_USB_COMPOSITE
     #define UsbSerial Serial
   #else
     #define UsbSerial MarlinCompositeSerial
@@ -108,9 +108,6 @@
     #error "LCD_SERIAL_PORT must be -1 or from 1 to 5. Please update your configuration."
   #else
     #error "LCD_SERIAL_PORT must be -1 or from 1 to 3. Please update your configuration."
-  #endif
-  #if HAS_DGUS_LCD
-    #define SERIAL_GET_TX_BUFFER_FREE() LCD_SERIAL.availableForWrite()
   #endif
 #endif
 
@@ -203,9 +200,17 @@ extern "C" {
 
 extern "C" char* _sbrk(int incr);
 
-static inline int freeMemory() {
+/*
+static int freeMemory() {
+  volatile int top;
+  top = (int)((char*)&top - reinterpret_cast<char*>(_sbrk(0)));
+  return top;
+}
+*/
+
+static int freeMemory() {
   volatile char top;
-  return &top - _sbrk(0);
+  return &top - reinterpret_cast<char*>(_sbrk(0));
 }
 
 #pragma GCC diagnostic pop

@@ -34,6 +34,7 @@
 #include "../../../module/planner.h"
 #include "../../../module/stepper.h"
 #include "../../../module/probe.h"
+#include "../../../module/temperature.h"
 #include "../../queue.h"
 
 #if ENABLED(PROBE_TEMP_COMPENSATION)
@@ -162,9 +163,9 @@
  *     There's no extra effect if you have a fixed Z probe.
  */
 G29_TYPE GcodeSuite::G29() {
-
+   G29_flag=false;
   reset_stepper_timeout();
-
+  
   const bool seenQ = EITHER(DEBUG_LEVELING_FEATURE, PROBE_MANUALLY) && parser.seen('Q');
 
   // G29 Q is also available if debugging
@@ -392,22 +393,7 @@ G29_TYPE GcodeSuite::G29() {
 
     planner.synchronize();
 
-    #if ENABLED(AUTO_BED_LEVELING_3POINT)
-      if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("> 3-point Leveling");
-      points[0].z = points[1].z = points[2].z = 0;  // Probe at 3 arbitrary points
-    #endif
-
-    #if BOTH(AUTO_BED_LEVELING_BILINEAR, EXTENSIBLE_UI)
-      ExtUI::onMeshLevelingStart();
-    #endif
-
-    if (!faux) {
-      remember_feedrate_scaling_off();
-
-      #if ENABLED(PREHEAT_BEFORE_LEVELING)
-        if (!dryrun) probe.preheat_for_probing(LEVELING_NOZZLE_TEMP, LEVELING_BED_TEMP);
-      #endif
-    }
+    if (!faux) remember_feedrate_scaling_off();
 
     // Disable auto bed leveling during G29.
     // Be formal so G29 can be done successively without G28.
@@ -424,6 +410,7 @@ G29_TYPE GcodeSuite::G29() {
     #endif
 
     #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
+
       if (TERN1(PROBE_MANUALLY, !no_action)
         && (gridSpacing != bilinear_grid_spacing || probe_position_lf != bilinear_start)
       ) {
@@ -437,7 +424,17 @@ G29_TYPE GcodeSuite::G29() {
         // Can't re-enable (on error) until the new grid is written
         abl_should_enable = false;
       }
+
     #endif // AUTO_BED_LEVELING_BILINEAR
+
+    #if ENABLED(AUTO_BED_LEVELING_3POINT)
+
+      if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("> 3-point Leveling");
+
+      // Probe at 3 arbitrary points
+      points[0].z = points[1].z = points[2].z = 0;
+
+    #endif // AUTO_BED_LEVELING_3POINT
 
   } // !g29_in_progress
 
@@ -660,9 +657,8 @@ G29_TYPE GcodeSuite::G29() {
 
           #elif ENABLED(AUTO_BED_LEVELING_BILINEAR)
 
-            const float z = measured_z + zoffset;
-            z_values[meshCount.x][meshCount.y] = z;
-            TERN_(EXTENSIBLE_UI, ExtUI::onMeshUpdate(meshCount, z));
+            z_values[meshCount.x][meshCount.y] = measured_z + zoffset;
+            TERN_(EXTENSIBLE_UI, ExtUI::onMeshUpdate(meshCount, z_values[meshCount.x][meshCount.y]));
 
           #endif
 
@@ -887,8 +883,12 @@ G29_TYPE GcodeSuite::G29() {
   #if ENABLED(DWIN_CREALITY_LCD)
     DWIN_CompletedLeveling();
   #endif
-
+  
   report_current_position();
+  xy_float_t g29_homing_xy = { X_MIN_POS, Y_MIN_POS };
+  do_blocking_move_to_xy(g29_homing_xy);
+
+  G29_flag=true;
 
   G29_RETURN(isnan(measured_z));
 }

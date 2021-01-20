@@ -328,7 +328,16 @@ void menuCallStatus(void)
       break;
 
     default:
-
+      //    #ifdef LCD_ENCODER_SUPPORT
+      //   if(LCD_encoderPosition)
+      //   {    
+      //     if(LCD_encoderPosition > 0)
+      //       setTargetTemp(getTargetTemp() + 5);
+      //     if(LCD_encoderPosition < 0)
+      //       setTargetTemp(getTargetTemp() - 5);
+      //     LCD_encoderPosition = 0;
+      //   }
+      // #endif
     break;
   }
  

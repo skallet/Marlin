@@ -1,6 +1,5 @@
 #include "../../../../../inc/MarlinConfigPre.h"
 #if ENABLED(BTT_UI_SPI)
-
 #include "BabyStep.h"
 #include "../TSC_Menu.h"
 #include "../../../../../feature/babystep.h"

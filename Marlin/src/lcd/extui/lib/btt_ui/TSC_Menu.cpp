@@ -146,18 +146,18 @@ void LCD_Setup() {
   LOGO_ReadDisplay();
  #endif
   storeCmd("M420 S");
-  //storeCmd("M420 Z30");
+  storeCmd("M420 Z30");
   boot.scanUpdates();
    
-  // if(readStoredPara() == false) // Read settings parameter
-  // {
+  if(readStoredPara() == false) // Read settings parameter
+  {
     TSC_Calibration();
     storePara();
     
     #ifdef LOGO_DISPLAY
       LOGO_ReadDisplay();
     #endif
-  //}
+  }
   memcpy(&lastSettings, &infoSettings, sizeof(SETTINGS));
   memcpy(lastTSC_Para, TSC_Para, sizeof(TSC_Para));
   #ifdef FILAMENT_RUNOUT_SENSOR
@@ -176,17 +176,6 @@ void menuUpdate(void) {
     lastMenu();
     #ifdef TEMP_LOAG
     temp_logo_display();
-    #endif
-    #ifdef TEMP_LOAG
-     if((infoMenu.menu[infoMenu.cur]!=menuPrinting)&&(infoMenu.menu[infoMenu.cur]!=menuStatus)&&((infoMenu.menu[infoMenu.cur]!=menuMove)))
-     {
-      GUI_DispString(PEN_LOAG_X- 6*BYTE_WIDTH, TEMP_LOAG_Y, (uint8_t *)"T0:"); 
-      GUI_DispString(PEN_LOAG_X, TEMP_LOAG_Y, (uint8_t *)"/"); // Ext value
-      GUI_DispString(BED_LOAG_X- 7*BYTE_WIDTH, TEMP_LOAG_Y, (uint8_t *)"Bed:"); 
-      GUI_DispString(BED_LOAG_X, TEMP_LOAG_Y, (uint8_t *)"/"); // Bed value
-      GUI_DispDec(PEN_LOAG_X + BYTE_WIDTH, TEMP_LOAG_Y, thermalManager.degTargetHotend(0), 3, LEFT);
-      GUI_DispDec(BED_LOAG_X + BYTE_WIDTH, TEMP_LOAG_Y, thermalManager.degTargetBed(), 3, LEFT);
-     }
     #endif
   }
 

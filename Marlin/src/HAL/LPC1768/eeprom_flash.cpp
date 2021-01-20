@@ -47,7 +47,11 @@ extern "C" {
 }
 
 #ifndef MARLIN_EEPROM_SIZE
-  #define MARLIN_EEPROM_SIZE 0x1000 // 4KB
+  //#ifdef BTT_UI_SPI
+    #define MARLIN_EEPROM_SIZE 0x400 // 1KB
+  //  #else
+  //   #define MARLIN_EEPROM_SIZE 0x1000 // 4KB
+  //  #endif
 #endif
 
 #define SECTOR_START(sector)  ((sector < 16) ? (sector << 12) : ((sector - 14) << 15))
@@ -73,15 +77,15 @@ bool PersistentStore::access_start() {
   __enable_irq();
 
   if (status == CMD_SUCCESS) {
-    // sector is blank so nothing stored yet
+    //sector is blank so nothing stored yet
     for (int i = 0; i < MARLIN_EEPROM_SIZE; i++) ram_eeprom[i] = EEPROM_ERASE;
     current_slot = EEPROM_SLOTS;
   }
   else {
-    // current slot is the first non blank one
+    //current slot is the first non blank one
     current_slot = first_nblank_loc / (MARLIN_EEPROM_SIZE);
-    uint8_t *eeprom_data = SLOT_ADDRESS(EEPROM_SECTOR, current_slot);
-    // load current settings
+   uint8_t *eeprom_data = SLOT_ADDRESS(EEPROM_SECTOR, current_slot);
+    //load current settings
     for (int i = 0; i < MARLIN_EEPROM_SIZE; i++) ram_eeprom[i] = eeprom_data[i];
   }
   eeprom_dirty = false;
@@ -93,18 +97,18 @@ bool PersistentStore::access_finish() {
   if (eeprom_dirty) {
     IAP_STATUS_CODE status;
     if (--current_slot < 0) {
-      // all slots have been used, erase everything and start again
+      //all slots have been used, erase everything and start again
       __disable_irq();
       status = EraseSector(EEPROM_SECTOR, EEPROM_SECTOR);
-      __enable_irq();
+     __enable_irq();
 
-      current_slot = EEPROM_SLOTS - 1;
+     current_slot = EEPROM_SLOTS - 1;
     }
 
     __disable_irq();
-    status = CopyRAM2Flash(SLOT_ADDRESS(EEPROM_SECTOR, current_slot), ram_eeprom, IAP_WRITE_4096);
+    status = CopyRAM2Flash(SLOT_ADDRESS(EEPROM_SECTOR, current_slot), ram_eeprom, IAP_WRITE_1024);
     __enable_irq();
-
+    
     if (status != CMD_SUCCESS) return false;
     eeprom_dirty = false;
   }

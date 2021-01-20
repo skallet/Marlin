@@ -122,9 +122,9 @@ void menuCallBackAutoBedLeveling(void)
     case KEY_ICON_0:
       #ifdef  FIX_MOUNTED_PROBE
       
-        //  thermalManager.setTargetHotend(LEVEL_PREHEAT_TEMP, 0);
-        //  thermalManager.setTargetBed(LEVEL_PREHEAT_BED);
-        //  infoMenu.menu[++infoMenu.cur] = menuStartLeveling;
+         thermalManager.setTargetHotend(LEVEL_PREHEAT_TEMP, 0);
+         thermalManager.setTargetBed(LEVEL_PREHEAT_BED);
+         infoMenu.menu[++infoMenu.cur] = menuStartLeveling;
         //  queue.enqueue_one_now("G28");
         //  queue.enqueue_one_now("G29");
         //  queue.enqueue_one_now("M500");

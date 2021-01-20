@@ -41,8 +41,8 @@ bool encoder_ReadStep(uint8_t io_index)
 uint8_t encoder_GetPos(void)
 {
   uint8_t LCD_newbutton = 0;
-  if(encoder_ReadStep(LCD_ENCA_INDEX)) LCD_newbutton |= LCD_EN_A;
-  if(encoder_ReadStep(LCD_ENCB_INDEX)) LCD_newbutton |= LCD_EN_B;
+  if(encoder_ReadStep(LCD_ENCA_INDEX)) LCD_newbutton |= EN_A;
+  if(encoder_ReadStep(LCD_ENCB_INDEX)) LCD_newbutton |= EN_B;
 
   return LCD_newbutton;
 }

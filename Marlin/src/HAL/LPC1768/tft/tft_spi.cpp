@@ -33,8 +33,8 @@ SPIClass TFT_SPI::SPIx(1);
 #define TFT_CS_H  WRITE(TFT_CS_PIN, HIGH)
 #define TFT_CS_L  WRITE(TFT_CS_PIN, LOW)
 
-#define TFT_DC_H  WRITE(TFT_DC_PIN, HIGH)
-#define TFT_DC_L  WRITE(TFT_DC_PIN, LOW)
+// #define TFT_DC_H  WRITE(TFT_DC_PIN, HIGH)
+// #define TFT_DC_L  WRITE(TFT_DC_PIN, LOW)
 
 #define TFT_RST_H WRITE(TFT_RESET_PIN, HIGH)
 #define TFT_RST_L WRITE(TFT_RESET_PIN, LOW)
@@ -54,10 +54,10 @@ void TFT_SPI::Init() {
     TFT_BLK_H;
   #endif
 
-  SET_OUTPUT(TFT_DC_PIN);
+  //SET_OUTPUT(TFT_DC_PIN);
   SET_OUTPUT(TFT_CS_PIN);
 
-  TFT_DC_H;
+ // TFT_DC_H;
   TFT_CS_H;
 
   /**
@@ -145,7 +145,7 @@ void TFT_SPI::Transmit(uint16_t Data) {
 
 void TFT_SPI::TransmitDMA(uint32_t MemoryIncrease, uint16_t *Data, uint16_t Count) {
   DataTransferBegin(DATASIZE_16BIT); //16
-  TFT_DC_H;
+ // TFT_DC_H;
   SPIx.dmaSend(Data, Count, MemoryIncrease);
   DataTransferEnd();
 }

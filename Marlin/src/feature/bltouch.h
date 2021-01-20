@@ -23,16 +23,19 @@
 
 #include "../inc/MarlinConfigPre.h"
 
-#if DISABLED(BLTOUCH_HS_MODE)
-  #define BLTOUCH_SLOW_MODE 1
-#endif
-
 // BLTouch commands are sent as servo angles
 typedef unsigned char BLTCommand;
 
-#define STOW_ALARM            true
-#define BLTOUCH_DEPLOY          10
-#define BLTOUCH_STOW            90
+#if ENABLED(CREALITY_TOUCH)
+  #define STOW_ALARM         false
+  #define BLTOUCH_DEPLOY       170
+  #define BLTOUCH_STOW          20
+#else
+  #define STOW_ALARM          true
+  #define BLTOUCH_DEPLOY        10
+  #define BLTOUCH_STOW          90
+#endif
+
 #define BLTOUCH_SW_MODE         60
 #define BLTOUCH_SELFTEST       120
 #define BLTOUCH_MODE_STORE     130
@@ -81,9 +84,9 @@ public:
   // Native BLTouch commands ("Underscore"...), used in lcd menus and internally
   FORCE_INLINE static void _reset()              { command(BLTOUCH_RESET, BLTOUCH_RESET_DELAY); }
 
-  FORCE_INLINE static void _selftest()           { command(BLTOUCH_SELFTEST, BLTOUCH_DELAY); }
+  FORCE_INLINE static void _selftest()           { /*command(BLTOUCH_SELFTEST, BLTOUCH_DELAY); */}
 
-  FORCE_INLINE static void _set_SW_mode()        { command(BLTOUCH_SW_MODE, BLTOUCH_DELAY); }
+  FORCE_INLINE static void _set_SW_mode()        { /*command(BLTOUCH_SW_MODE, BLTOUCH_DELAY);*/ }
   FORCE_INLINE static void _reset_SW_mode()      { if (triggered()) _stow(); else _deploy(); }
 
   FORCE_INLINE static void _set_5V_mode()        { command(BLTOUCH_5V_MODE, BLTOUCH_SET5V_DELAY); }
