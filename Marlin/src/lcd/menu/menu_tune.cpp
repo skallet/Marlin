@@ -38,6 +38,10 @@
   #include "../../feature/bedlevel/bedlevel.h"
 #endif
 
+#if ENABLED(SINGLENOZZLE)
+  #include "../../module/tool_change.h"
+#endif
+
 #if ENABLED(BABYSTEPPING)
 
   #include "../../feature/babystep.h"

@@ -49,7 +49,7 @@ static void event_handler(lv_obj_t *obj, lv_event_t event) {
   lv_clear_tmc_current_settings();
   switch (obj->mks_obj_id) {
     case ID_TMC_CURRENT_RETURN:
-      uiCfg.para_ui_page = false;
+      uiCfg.para_ui_page = 0;
       draw_return_ui();
       return;
     #if AXIS_IS_TMC(X)
@@ -79,11 +79,11 @@ static void event_handler(lv_obj_t *obj, lv_event_t event) {
     #endif
 
     case ID_TMC_CURRENT_UP:
-      uiCfg.para_ui_page = false;
+      uiCfg.para_ui_page = 0;
       lv_draw_tmc_current_settings();
       return;
     case ID_TMC_CURRENT_DOWN:
-      uiCfg.para_ui_page = true;
+      uiCfg.para_ui_page = 1;
       lv_draw_tmc_current_settings();
       return;
   }
@@ -95,7 +95,7 @@ void lv_draw_tmc_current_settings() {
   scr = lv_screen_create(TMC_CURRENT_UI, machine_menu.TmcCurrentConfTitle);
 
   float milliamps;
-  if (!uiCfg.para_ui_page) {
+  if (uiCfg.para_ui_page != 1) {
     #if AXIS_IS_TMC(X)
       milliamps = stepperX.getMilliamps();
     #else

@@ -588,6 +588,10 @@
   #error "SERIAL_PORT must be defined."
 #elif defined(SERIAL_PORT_2) && SERIAL_PORT_2 == SERIAL_PORT
   #error "SERIAL_PORT_2 cannot be the same as SERIAL_PORT."
+#elif defined(LCD_SERIAL_PORT) && LCD_SERIAL_PORT == SERIAL_PORT
+  #error "LCD_SERIAL_PORT cannot be the same as SERIAL_PORT."
+#elif defined(LCD_SERIAL_PORT) && LCD_SERIAL_PORT == SERIAL_PORT_2
+  #error "LCD_SERIAL_PORT cannot be the same as SERIAL_PORT_2."
 #endif
 #if !(defined(__AVR__) && defined(USBCON))
   #if ENABLED(SERIAL_XON_XOFF) && RX_BUFFER_SIZE < 1024
@@ -2334,7 +2338,8 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
   + ENABLED(U8GLIB_SH1106_EINSTART) \
   + ENABLED(ULTI_CONTROLLER) \
   + ENABLED(ULTIMAKERCONTROLLER) \
-  + ENABLED(ZONESTAR_LCD)
+  + ENABLED(ZONESTAR_LCD)\
+  + ENABLED(BTT_TFT35_SPIV1_0)
   #error "Please select only one LCD controller option."
 #endif
 
@@ -2342,7 +2347,7 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
 #undef IS_EXTUI
 #undef IS_LEGACY_TFT
 
-#if ANY(TFT_GENERIC, MKS_TS35_V2_0, MKS_ROBIN_TFT24, MKS_ROBIN_TFT28, MKS_ROBIN_TFT32, MKS_ROBIN_TFT35, MKS_ROBIN_TFT43, MKS_ROBIN_TFT_V1_1R, TFT_TRONXY_X5SA, ANYCUBIC_TFT35, ANYCUBIC_TFT35, LONGER_LK_TFT28, ANET_ET4_TFT28, ANET_ET5_TFT35)
+#if ANY(TFT_GENERIC, MKS_TS35_V2_0, MKS_ROBIN_TFT24, MKS_ROBIN_TFT28, MKS_ROBIN_TFT32, MKS_ROBIN_TFT35, MKS_ROBIN_TFT43, MKS_ROBIN_TFT_V1_1R, TFT_TRONXY_X5SA, ANYCUBIC_TFT35, ANYCUBIC_TFT35, LONGER_LK_TFT28, ANET_ET4_TFT28, ANET_ET5_TFT35,BTT_TFT35_SPIV1_0)
   #if NONE(TFT_COLOR_UI, TFT_CLASSIC_UI, TFT_LVGL_UI)
     #error "TFT_COLOR_UI, TFT_CLASSIC_UI, TFT_LVGL_UI is required for your TFT. Please enable one."
   #elif 1 < ENABLED(TFT_COLOR_UI) + ENABLED(TFT_CLASSIC_UI) + ENABLED(TFT_LVGL_UI)
@@ -2385,23 +2390,8 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
     #error "SERIAL_PORT is set to -1, but the MOTHERBOARD has no native USB support. Set SERIAL_PORT to a valid value for your board."
   #elif SERIAL_PORT_2 == -1
     #error "SERIAL_PORT_2 is set to -1, but the MOTHERBOARD has no native USB support. Set SERIAL_PORT_2 to a valid value for your board."
-  #elif MMU2_SERIAL_PORT == -1
-    #error "MMU2_SERIAL_PORT is set to -1, but the MOTHERBOARD has no native USB support. Set MMU2_SERIAL_PORT to a valid value for your board."
   #elif LCD_SERIAL_PORT == -1
     #error "LCD_SERIAL_PORT is set to -1, but the MOTHERBOARD has no native USB support. Set LCD_SERIAL_PORT to a valid value for your board."
-  #endif
-#endif
-
-/**
- * MMU2 require a dedicated serial port
- */
-#ifdef MMU2_SERIAL_PORT
-  #if MMU2_SERIAL_PORT == SERIAL_PORT
-    #error "MMU2_SERIAL_PORT cannot be the same as SERIAL_PORT."
-  #elif defined(SERIAL_PORT_2) && MMU2_SERIAL_PORT == SERIAL_PORT_2
-    #error "MMU2_SERIAL_PORT cannot be the same as SERIAL_PORT_2."
-  #elif defined(LCD_SERIAL_PORT) && MMU2_SERIAL_PORT == LCD_SERIAL_PORT
-    #error "MMU2_SERIAL_PORT cannot be the same as LCD_SERIAL_PORT."
   #endif
 #endif
 

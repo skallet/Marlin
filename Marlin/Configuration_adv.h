@@ -1237,7 +1237,7 @@
    * an option on the LCD screen to continue the print from the last-known
    * point in the file.
    */
-  //#define POWER_LOSS_RECOVERY
+  #define POWER_LOSS_RECOVERY
   #if ENABLED(POWER_LOSS_RECOVERY)
     #define PLR_ENABLED_DEFAULT   false // Power Loss Recovery enabled by default. (Set with 'M413 Sn' & M500)
     //#define BACKUP_POWER_SUPPLY       // Backup power / UPS to move the steppers on power loss
@@ -1663,7 +1663,7 @@
  *
  * Warning: Does not respect endstops!
  */
-//#define BABYSTEPPING
+#define BABYSTEPPING
 #if ENABLED(BABYSTEPPING)
   //#define INTEGRATED_BABYSTEPPING         // EXPERIMENTAL integration of babystepping into the Stepper ISR
   //#define BABYSTEP_WITHOUT_HOMING
@@ -1684,7 +1684,7 @@
     #endif
   #endif
 
-  //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
+  #define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
 
   //#define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
@@ -3344,7 +3344,7 @@
   //#define USER_SCRIPT_RETURN  // Return to status screen after a script
 
   #define USER_DESC_1 "Home & UBL Info"
-  #define USER_GCODE_1 "G29NW"
+  #define USER_GCODE_1 "G28\nG29 W"
 
   #define USER_DESC_2 "Preheat for " PREHEAT_1_LABEL
   #define USER_GCODE_2 "M140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND)
@@ -3353,7 +3353,7 @@
   #define USER_GCODE_3 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_2_TEMP_HOTEND)
 
   #define USER_DESC_4 "Heat Bed/Home/Level"
-  #define USER_GCODE_4 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nG29N"
+  #define USER_GCODE_4 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nG28\nG29"
 
   #define USER_DESC_5 "Home & Info"
   #define USER_GCODE_5 "G28\nM503"
@@ -3601,7 +3601,10 @@
   //#define E_MUX2_PIN 44  // Needed for 5 to 8 inputs
 #elif HAS_PRUSA_MMU2
   // Serial port used for communication with MMU2.
+  // For AVR enable the UART port used for the MMU. (e.g., mmuSerial)
+  // For 32-bit boards check your HAL for available serial ports. (e.g., Serial2)
   #define MMU2_SERIAL_PORT 2
+  #define MMU2_SERIAL mmuSerial
 
   // Use hardware reset for MMU if a pin is defined for it
   //#define MMU2_RST_PIN 23
